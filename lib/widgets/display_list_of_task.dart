@@ -3,7 +3,6 @@ import 'package:todoapp/data/data.dart';
 import 'package:todoapp/utils/utils.dart';
 import 'package:todoapp/widgets/widgets.dart';
 
-
 class DisplayListOfTasks extends StatelessWidget {
   const DisplayListOfTasks({
     super.key,
@@ -38,10 +37,34 @@ class DisplayListOfTasks extends StatelessWidget {
               itemCount: tasks.length,
               itemBuilder: (ctx, index) {
                 final task = tasks[index];
-                return TaskTile(task: task);
+                return InkWell(
+                  onLongPress: () {
+                    // TODO-Delete Task
+                  },
+                  onTap: () async {
+                    // TODO-show task details
+
+                    await showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      constraints: const BoxConstraints(
+                        maxWidth: double.infinity,
+                      ),
+                      builder: (ctx) {
+                        return SizedBox(
+                          height: deviceSize.height * 0.5,
+                          width: double.infinity,
+                          child: TaskDetails(task: task),
+                        );
+                      },
+                    );
+                  },
+                  child: TaskTile(task: task),
+                );
               },
               separatorBuilder: (BuildContext context, int index) {
-                return const Divider(thickness: 1.5,);
+                return const Divider(thickness: 1.5);
               },
             ),
     );
