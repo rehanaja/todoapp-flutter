@@ -50,7 +50,18 @@ class TaskDetails extends StatelessWidget {
           const Gap(16),
           Text(
             task.note.isEmpty ? 'There is no additional note for this task' : task.note,
-          )
+          ),
+          const Gap(16),
+          Visibility(
+            visible: task.isCompleted,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Task completed '),
+                Icon(Icons.check_box, color: Colors.green),
+              ],
+            ),
+          ),
         ],
       ),
     );
