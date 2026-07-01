@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/data/data.dart';
 import 'package:todoapp/utils/extensions.dart';
 import 'package:gap/gap.dart';
+import 'package:todoapp/utils/utils.dart';
+import 'package:todoapp/widgets/display_white_text.dart';
+import 'package:todoapp/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,31 +23,95 @@ class HomeScreen extends StatelessWidget {
                 height: deviceSize.height * 0.3,
                 width: deviceSize.width,
                 color: colors.primary,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '01 Juli 2026',
-                        style: context.textTheme.headlineSmall?.copyWith(
-                          color: colors.surface,
-                          fontSize: 20,
-                        ),
-                      ),
-                      Gap(10),
-                      Text(
-                        'My Todo list',
-                        style: context.textTheme.headlineSmall?.copyWith(
-                          color: colors.surface,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 40,
-                        ),
-                      ),
-                    ],
-                  ),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DisplayWhiteText(
+                      text: '01 Juli 2026',
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    Gap(10),
+                    DisplayWhiteText(text: 'My Todo list', fontSize: 40),
+                  ],
                 ),
               ),
             ],
+          ),
+          Positioned(
+            top: 170,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    DisplayListOfTasks(
+                      tasks: [
+                        Task(
+                          title: 'title 1',
+                          note: 'note',
+                          time: '20:00',
+                          date: '01 Juli 2026',
+                          isCompleted: false,
+                          category: TaskCategories.education,
+                        ),
+                        Task(
+                          title: 'title 2',
+                          note: 'note',
+                          time: '19:00',
+                          date: '02 Juli 2026',
+                          isCompleted: false,
+                          category: TaskCategories.education,
+                        ),
+                      ],
+                    ),
+                    const Gap(20),
+                    Text('Completed', style: context.textTheme.headlineMedium),
+                    const Gap(20),
+                    DisplayListOfTasks(
+                      tasks: const [
+                        Task(
+                          title: 'title 1',
+                          note: 'note',
+                          time: '20:00',
+                          date: '01 Juli 2026',
+                          isCompleted: false,
+                          category: TaskCategories.education,
+                        ),
+                        Task(
+                          title: 'title 2',
+                          note: 'note',
+                          time: '19:00',
+                          date: '02 Juli 2026',
+                          isCompleted: false,
+                          category: TaskCategories.education,
+                        ),
+                        
+                      ],
+                      isCompletedTask: true,
+                    ),
+                    const Gap(20),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: DisplayWhiteText(text: 'Add New Task'),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),
