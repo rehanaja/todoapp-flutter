@@ -12,6 +12,16 @@ enum TaskCategories {
   others(Icons.category, Colors.grey),
   finance(Icons.account_balance, Colors.orange);
 
+  static TaskCategories stringToCategory(String name) {
+    try {
+      return TaskCategories.values.firstWhere(
+        (category) => category.name == name,
+      );
+    } catch (e) {
+      return TaskCategories.others;
+    }
+  }
+
   final IconData icon;
   final Color color;
   const TaskCategories(this.icon, this.color);
