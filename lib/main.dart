@@ -1,11 +1,12 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/app/todo_app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() => runApp(
   DevicePreview(
     enabled: true,
-    builder: (context) => MyApp(), // Wrap your app
+    builder: (context) => const ProviderScope(child: MyApp()), // Wrap your app
   ),
 );
 
