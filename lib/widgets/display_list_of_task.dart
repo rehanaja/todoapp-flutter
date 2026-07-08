@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/data/data.dart';
+import 'package:todoapp/providers/task/task_provider.dart';
 import 'package:todoapp/utils/utils.dart';
 import 'package:todoapp/widgets/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DisplayListOfTasks extends StatelessWidget {
+class DisplayListOfTasks extends ConsumerWidget {
   const DisplayListOfTasks({
     super.key,
     required this.tasks,
@@ -13,7 +15,7 @@ class DisplayListOfTasks extends StatelessWidget {
   final bool isCompletedTask;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final deviceSize = context.deviceSize;
     final height = isCompletedTask
         ? deviceSize.height * 0.25
@@ -40,6 +42,7 @@ class DisplayListOfTasks extends StatelessWidget {
                 return InkWell(
                   onLongPress: () {
                     // TODO-Delete Task
+                    AppAlerts.showDeleteAlertDialog(context, ref, task);
                   },
                   onTap: () async {
                     // TODO-show task details
@@ -60,7 +63,22 @@ class DisplayListOfTasks extends StatelessWidget {
                       },
                     );
                   },
-                  child: TaskTile(task: task),
+                  child: TaskTile(
+                    task: task,
+                    onCompleted: (value) async {
+                      await ref
+                          .read(taskProvider.notifier)
+                          .updateTask(task)
+                          .then((value) {
+                            AppAlerts.displaySnackBar(
+                              context,
+                              task.isCompleted
+                                  ? 'Task incompleted'
+                                  : 'Task completed',
+                            );
+                          });
+                    },
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

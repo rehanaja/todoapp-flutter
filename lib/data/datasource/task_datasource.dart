@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:todoapp/data/data.dart';
 import 'package:todoapp/utils/utils.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class TaskDatasource {
   static final TaskDatasource _instance = TaskDatasource._();
@@ -20,6 +21,7 @@ class TaskDatasource {
   }
 
   Future<Database> _initDB() async {
+    databaseFactory = databaseFactoryFfi;
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, DBKeys.dbName);
     return openDatabase(path, version: 1, onCreate: _onCreate);
@@ -28,13 +30,13 @@ class TaskDatasource {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
     CREATE TABLE ${DBKeys.dbTable}(
-      ${DBKeys.idColumn} INTEGER PRIMARY,
+      ${DBKeys.idColumn} INTEGER PRIMARY KEY,
       ${DBKeys.titleColumn} TEXT,
       ${DBKeys.noteColumn} TEXT,
       ${DBKeys.dateColumn} TEXT,
       ${DBKeys.timeColumn} TEXT,
       ${DBKeys.categoryColumn} TEXT,
-      ${DBKeys.isCompletedColumn} INTEGER,
+      ${DBKeys.isCompletedColumn} INTEGER
     )
     ''');
   }
