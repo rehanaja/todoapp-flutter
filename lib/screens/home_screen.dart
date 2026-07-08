@@ -20,10 +20,10 @@ class HomeScreen extends ConsumerWidget {
     final colors = context.colorScheme;
     final deviceSize = context.deviceSize;
     final taskState = ref.watch(taskProvider);
-    final completedTasks = _completedTasks(taskState.tasks);
-    final incompletedTasks = _incompletedTasks(taskState.tasks);
+    final completedTasks = _completedTasks(taskState.tasks, ref);
+    final incompletedTasks = _incompletedTasks(taskState.tasks, ref);
     final selectedDate = ref.watch(dateProvider);
-
+  
     return Scaffold(
       body: Stack(
         children: [
@@ -94,10 +94,12 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  List<Task> _completedTasks(List<Task> tasks) {
+  List<Task> _completedTasks(List<Task> tasks, WidgetRef ref) {
+    final selectedDate = ref.watch(dateProvider);
     final List<Task> filteredTask = [];
     for (var task in tasks) {
-      if (task.isCompleted) {
+      final isTaskDay = Helpers.isTaskFromSelectedDate(task, selectedDate);
+      if (task.isCompleted && isTaskDay) {
         filteredTask.add(task);
       }
     }
@@ -105,11 +107,15 @@ class HomeScreen extends ConsumerWidget {
     return filteredTask;
   }
 
-  List<Task> _incompletedTasks(List<Task> tasks) {
+  List<Task> _incompletedTasks(List<Task> tasks, WidgetRef ref) {
+    final selectedDate = ref.watch(dateProvider);
+
     final List<Task> filteredTask = [];
     for (var task in tasks) {
+      final isTaskDay = Helpers.isTaskFromSelectedDate(task, selectedDate);
+
       // not completed tasks
-      if (!task.isCompleted) {
+      if (!task.isCompleted && isTaskDay) {
         filteredTask.add(task);
       }
     }
